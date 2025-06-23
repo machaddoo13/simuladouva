@@ -1,0 +1,228 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Fonte mais moderna */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #eef2f7; /* Cor de fundo mais suave */
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Para o footer ficar no final da página */
+}
+
+header {
+    background: linear-gradient(to right, #007bff, #0056b3); /* Gradiente de cor */
+    color: #fff;
+    padding: 1.5rem 0;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra mais pronunciada */
+    margin-bottom: 20px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem; /* Título maior */
+    letter-spacing: 1px;
+}
+
+header p {
+    margin: 5px 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9; /* Levemente transparente */
+}
+
+main {
+    flex-grow: 1; /* Para ocupar o espaço restante e empurrar o footer */
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px; /* Mais padding */
+    background-color: #fff;
+    border-radius: 12px; /* Cantos mais arredondados */
+    box-shadow: 0 8px 16px rgba(0,0,0,0.15); /* Sombra mais suave e espalhada */
+}
+
+h1, h2 {
+    color: #0056b3;
+    text-align: center;
+    margin-bottom: 25px; /* Espaçamento maior */
+}
+
+#welcome-screen h2, #results-screen h2 {
+    color: #0056b3;
+    font-size: 2rem;
+}
+
+#welcome-screen p {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+/* Estilo para a nova div de informações da questão */
+#quiz-header-info {
+    background-color: #f8fafd; /* Fundo suave para o cabeçalho da questão */
+    border-radius: 8px;
+    padding: 15px 20px;
+    margin-bottom: 25px; /* Espaço após o cabeçalho da questão */
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.05); /* Sombra interna sutil */
+    border: 1px solid #e0e6ed;
+}
+
+#question-nav-info {
+    text-align: right;
+    font-size: 0.95em;
+    color: #667788;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+#question-nav-info span {
+    color: #007bff; /* Destacar números */
+}
+
+#question-text {
+    font-size: 1.5rem; /* Texto da questão um pouco maior */
+    color: #2c3e50; /* Cor mais escura para o texto da questão */
+    text-align: left; /* Alinhar texto da questão à esquerda */
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+/* Botões gerais */
+button {
+    padding: 12px 20px;
+    margin: 10px 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px; /* Bordas mais arredondadas */
+    cursor: pointer;
+    font-size: 1.05rem;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Efeito de transformação */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Pequeno levantamento ao passar o mouse */
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    transform: none; /* Sem efeito de levantamento quando desabilitado */
+    box-shadow: none;
+}
+
+/* Botões de navegação específicos */
+.navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px; /* Mais espaço acima */
+}
+
+.navigation-buttons button {
+    flex-grow: 1;
+    margin: 0 10px; /* Espaçamento maior entre eles */
+}
+
+#submit-answer-btn {
+    width: auto;
+    flex-grow: 1;
+    background-color: #28a745; /* Cor diferente para o botão de responder */
+}
+
+#submit-answer-btn:hover {
+    background-color: #218838;
+}
+
+
+/* Estilo para as opções de resposta */
+.option {
+    background-color: #f0f4f7; /* Fundo mais claro para as opções */
+    padding: 12px 15px; /* Mais padding */
+    margin-bottom: 12px; /* Mais espaço entre opções */
+    border-radius: 8px; /* Cantos mais arredondados */
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    border: 1px solid #d9e2ec; /* Borda mais suave */
+}
+
+.option:hover {
+    background-color: #e2e8f0;
+    border-color: #c0d3eb;
+}
+
+.option.selected {
+    background-color: #e0f2f7; /* Azul mais claro para selecionado */
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2); /* Sombra azul ao redor do selecionado */
+}
+
+.option.correct {
+    background-color: #d4edda;
+    border-color: #28a745;
+    font-weight: bold;
+}
+
+.option.incorrect {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    font-weight: bold;
+}
+
+.feedback {
+    margin-top: 20px; /* Mais espaço */
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.1rem; /* Feedback um pouco maior */
+}
+
+.feedback.correct {
+    color: #28a745;
+}
+
+.feedback.incorrect {
+    color: #dc3545;
+}
+
+#results-list {
+    list-style: none; /* Remove marcadores de lista */
+    padding: 0;
+}
+
+#results-list li {
+    background-color: #f9f9f9;
+    margin-bottom: 10px;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #eee;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+#results-list li span.correct {
+    color: #28a745;
+    font-weight: bold;
+}
+
+#results-list li span.incorrect {
+    color: #dc3545;
+    font-weight: bold;
+}
+
+.source-info {
+    font-size: 0.8em;
+    color: #888;
+    margin-top: 8px;
+    font-style: italic;
+}
+
+footer {
+    text-align: center;
+    padding: 25px; /* Mais padding no footer */
+    margin-top: auto; /* Empurra o footer para baixo */
+    background-color: #34495e; /* Fundo mais escuro e sólido */
+    color: #ecf0f1; /* Cor de texto mais clara */
+    font-size: 0.85rem;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.2);
+}

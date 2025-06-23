@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado de Direitos Humanos</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Simulado de Direitos Humanos</h1>
+        <p>Baseado no conteúdo da Aula 1: Conceito, Características e Importância.</p>
+    </header>
+
+    <main id="quiz-container">
+        <div id="welcome-screen">
+            <h2>Bem-vindo(a) ao Simulado!</h2>
+            <p>Este simulado contém questões sobre Conceito, Características, Importância, Origens e Paradoxos dos Direitos Humanos.</p>
+            <button id="start-quiz-btn">Iniciar Simulado</button>
+        </div>
+
+        <div id="question-screen" style="display: none;">
+            <div id="quiz-header-info">
+                <div id="question-nav-info">
+                    <span id="question-number">Questão 1</span> de <span id="total-questions-display"></span> | Faltam <span id="questions-remaining"></span>
+                </div>
+                <h2 id="question-text"></h2>
+            </div>
+            
+            <div id="options-container">
+                </div>
+            <div class="navigation-buttons">
+                <button id="prev-question-btn" style="display: none;">Anterior</button>
+                <button id="submit-answer-btn">Responder</button>
+                <button id="next-question-btn" style="display: none;">Próximo</button>
+            </div>
+            <p id="feedback" class="feedback"></p>
+        </div>
+
+        <div id="results-screen" style="display: none;">
+            <h2>Resultados do Simulado</h2>
+            <p>Você acertou <span id="score">0</span> questões e errou <span id="errors">0</span> questões de <span id="total-questions-results">0</span>.</p>
+            <h3>Detalhes:</h3>
+            <ul id="results-list">
+                </ul>
+            <button id="restart-quiz-btn">Fazer Novamente</button>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Simulado de Direitos Humanos. Conteúdo baseado em "Políticas Públicas e Convenções Internacionais de Direitos Humanos" do Prof. Marcos Aurélio Lopes da Silva.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

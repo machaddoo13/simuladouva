@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulado de Direitos Humanos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Estilos gerais para garantir que a página ocupe a largura total e se adapte */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center; /* Centraliza o conteúdo horizontalmente */
+            align-items: flex-start; /* Alinha o conteúdo ao topo verticalmente */
+            min-height: 100vh; /* Garante que o corpo ocupe a altura total da viewport */
+            padding: 20px; /* Padding nas bordas para respiro em telas pequenas */
+            box-sizing: border-box; /* Inclui padding e borda no cálculo total da largura/altura */
+        }
+        /* Container principal do simulado, com largura fluida e máxima definida */
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%; /* Ocupa 100% da largura disponível */
+            max-width: 800px; /* Mas não ultrapassa 800px em telas grandes */
+            margin-top: 20px;
+        }
+        /* Estilo do título do simulado */
+        .quiz-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+        /* Estilo para o nome do professor */
+        .professor-name {
+            font-size: 0.9rem; /* Letra menor para o nome do professor */
+            color: #555;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        /* Cabeçalho da questão, com a indicação do número da questão */
+        .question-header {
+            display: flex;
+            justify-content: center; /* Centralizar a indicação da questão */
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        /* Texto da questão */
+        .question-text {
+            font-size: 1.15rem; /* Tamanho de fonte responsivo */
+            margin-bottom: 25px;
+            line-height: 1.6;
+            color: #333;
+        }
+        /* Estilo das opções de resposta (labels para os inputs de rádio) */
+        .options-list label {
+            display: block;
+            background-color: #f9f9f9;
+            padding: 15px; /* Padding generoso para facilitar o toque em telas sensíveis */
+            margin-bottom: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e0e0e0;
+            font-size: 1rem; /* Tamanho de fonte responsivo */
+            color: #555;
+        }
+        .options-list label:hover {
+            background-color: #eef2ff;
+            border-color: #a7b7ed;
+        }
+        .options-list input[type="radio"]:checked + span {
+            font-weight: bold;
+            color: #4f46e5;
+        }
+        .options-list input[type="radio"] {
+            margin-right: 12px;
+        }
+        /* Botões de navegação */
+        .navigation-buttons {
+            display: flex;
+            justify-content: space-between; /* Espaçamento entre os botões */
+            margin-top: 30px;
+            /* Em telas menores, os botões se adaptarão à largura disponível */
+            flex-wrap: wrap; /* Permite que os botões quebrem a linha se não houver espaço */
+            gap: 15px; /* Espaçamento entre os botões quando eles quebram a linha */
+        }
+        .nav-button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            flex-grow: 1; /* Permite que os botões cresçam para ocupar o espaço disponível */
+            min-width: 140px; /* Garante um tamanho mínimo para o botão */
+        }
+        .nav-button.primary {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .nav-button.primary:hover {
+            background-color: #4338ca;
+            transform: translateY(-1px);
+        }
+        .nav-button.secondary {
+            background-color: #e0e7ff;
+            color: #4f46e5;
+        }
+        .nav-button.secondary:hover {
+            background-color: #c7d2fe;
+            transform: translateY(-1px);
+        }
+        /* Feedback de resposta (correto/incorreto) */
+        .feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .feedback.correct {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+        .feedback.incorrect {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+        /* Tela de resultado final */
+        .result-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .result-screen h2 {
+            font-size: 2rem;
+            color: #4f46e5;
+            margin-bottom: 15px;
+        }
+        .result-screen p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 25px;
+        }
+        .result-screen button {
+            background-color: #22c55e;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .result-screen button:hover {
+            background-color: #16a34a;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho do Simulador -->
+        <h1 class="quiz-title">Simulado de Direitos Humanos</h1>
+        <p class="professor-name">Professor Marcos Aurélio Lopes da Silva</p>
+
+        <div id="quiz-container">
+            <div class="question-header">
+                <span id="question-indicator" class="text-lg font-semibold text-gray-700">Questão 1 de 50</span>
+            </div>
+            <div class="question-text" id="question-text"></div>
+            <form id="options-form" class="options-list">
+                <!-- Opções serão carregadas aqui pelo JS -->
+            </form>
+            <div id="feedback" class="feedback hidden"></div>
+            <div class="navigation-buttons">
+                <button id="prev-button" class="nav-button secondary" disabled>Anterior</button>
+                <button id="next-button" class="nav-button primary">Próxima</button>
+            </div>
+        </div>
+        <div id="result-screen" class="result-screen hidden">
+            <h2>Simulado Concluído!</h2>
+            <p id="final-score" class="text-xl"></p>
+            <button id="restart-button">Refazer Simulado</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Variáveis globais para configuração e estado
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {};
+
+        // Importações do Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Inicialização do Firebase
+        let app;
+        let db;
+        let auth;
+        let userId = 'anon'; // Default para usuário anônimo
+
+        // Questões do simulado (pelo menos 50, geradas a partir do PDF)
+        const questions = [
+            {
+                question: "De acordo com o PDF, qual o CONCEITO de Direitos Humanos?",
+                options: [
+                    "São direitos aplicáveis apenas a certas raças e religiões.",
+                    "São direitos inerentes a todos os seres humanos, independentemente de raça, sexo, nacionalidade, etnia, idioma, religião ou qualquer outra condição.",
+                    "São liberdades que garantem a dignidade apenas de cidadãos de países desenvolvidos.",
+                    "São normas estabelecidas por governos para controlar a população."
+                ],
+                correctAnswer: "São direitos inerentes a todos os seres humanos, independentemente de raça, sexo, nacionalidade, etnia, idioma, religião ou qualquer outra condição."
+            },
+            {
+                question: "Qual das seguintes NÃO é uma característica dos Direitos Humanos, conforme o PDF?",
+                options: [
+                    "Universais",
+                    "Inalienáveis",
+                    "Divisíveis",
+                    "Interdependentes"
+                ],
+                correctAnswer: "Divisíveis"
+            },
+            {
+                question: "O que significa a característica 'Inalienáveis' dos Direitos Humanos?",
+                options: [
+                    "Podem ser tirados ou renunciados em certas condições.",
+                    "Não podem ser tirados ou renunciados.",
+                    "Aplicam-se apenas em tempos de paz.",
+                    "São exclusivos de indivíduos com alta renda."
+                ],
+                correctAnswer: "Não podem ser tirados ou renunciados."
+            },
+            {
+                question: "Qual a importância dos Direitos Humanos, segundo o texto?",
+                options: [
+                    "Proteger a dignidade humana, promover a paz e a justiça, e serem a base para uma sociedade justa e equitativa.",
+                    "Garantir privilégios para a nobreza e o clero.",
+                    "Servir como mecanismo de controle estatal sobre a população.",
+                    "Limitar as liberdades individuais em nome da segurança nacional."
+                ],
+                correctAnswer: "Proteger a dignidade humana, promover a paz e a justiça, e serem a base para uma sociedade justa e equitativa."
+            },
+            {
+                question: "As primeiras noções de direitos individuais podem ser encontradas em quais antigas civilizações, de acordo com o PDF?",
+                options: [
+                    "Egípcia e Babilônica",
+                    "Grega e Romana",
+                    "Chinesa e Indiana",
+                    "Persa e Suméria"
+                ],
+                correctAnswer: "Grega e Romana"
+            },
+            {
+                question: "Qual movimento intelectual do século XVIII valorizava a razão, a ciência e a liberdade individual e inspirou revoluções liberais?",
+                options: [
+                    "Renascença",
+                    "Reforma Protestante",
+                    "Iluminismo",
+                    "Romantismo"
+                ],
+                correctAnswer: "Iluminismo"
+            },
+            {
+                question: "Qual documento fundamental foi adotado pela ONU em 1948 após os horrores da Segunda Guerra Mundial?",
+                options: [
+                    "Carta das Nações Unidas",
+                    "Pacto Internacional sobre Direitos Civis e Políticos",
+                    "Declaração Universal dos Direitos Humanos",
+                    "Tratado de Versalhes"
+                ],
+                correctAnswer: "Declaração Universal dos Direitos Humanos"
+            },
+            {
+                question: "O conceito de Direitos Humanos apresenta PARADOXOS. O que o PDF define como paradoxo?",
+                options: [
+                    "Uma situação sempre verdadeira e sem contradições.",
+                    "Uma situação que parece contraditória ou absurda, mas que, ao mesmo tempo, contém uma certa verdade.",
+                    "Um princípio inquestionável sem desafios de aplicação.",
+                    "Um conjunto de leis sem ambiguidade."
+                ],
+                correctAnswer: "Uma situação que parece contraditória ou absurda, mas que, ao mesmo tempo, contém uma certa verdade."
+            },
+            {
+                question: "Qual paradoxo dos Direitos Humanos se refere ao conflito entre a aplicação universal e as diferentes culturas e costumes?",
+                options: [
+                    "Teoria x Prática",
+                    "Individual x Coletivo",
+                    "Direitos Negativos x Direitos Positivos",
+                    "Universalidade x Relativismo"
+                ],
+                correctAnswer: "Universalidade x Relativismo"
+            },
+            {
+                question: "Os direitos negativos exigem do Estado uma abstenção. Qual dos exemplos abaixo se enquadra nessa categoria?",
+                options: [
+                    "Direito à saúde",
+                    "Direito ao trabalho",
+                    "Direito à vida",
+                    "Direito à educação"
+                ],
+                correctAnswer: "Direito à vida"
+            },
+            {
+                question: "Qual das seguintes não é uma possível solução para os paradoxos dos Direitos Humanos, de acordo com o PDF?",
+                options: [
+                    "Diálogo intercultural",
+                    "Fortalecimento das instituições",
+                    "Relativização dos direitos",
+                    "Educação"
+                ],
+                correctAnswer: "Relativização dos direitos"
+            },
+            {
+                question: "O que defende o universalismo dos direitos humanos?",
+                options: [
+                    "Que os direitos humanos variam de acordo com a cultura.",
+                    "Que os direitos são iguais para todos, independentemente da cultura.",
+                    "Que não é possível uma moral universal.",
+                    "Que o conteúdo dos direitos humanos está relacionado ao sistema político local."
+                ],
+                correctAnswer: "Que os direitos são iguais para todos, independentemente da cultura."
+            },
+            {
+                question: "A Declaração Universal dos Direitos Humanos (DUDH) estabelece, entre outros, o direito à:",
+                options: [
+                    "Apenas à vida e à liberdade de culto.",
+                    "Proteção da lei, à liberdade de locomoção e residência, à nacionalidade e ao casamento.",
+                    "Apenas à propriedade e ao trabalho.",
+                    "Apenas à participação política para homens."
+                ],
+                correctAnswer: "Proteção da lei, à liberdade de locomoção e residência, à nacionalidade e ao casamento."
+            },
+            {
+                question: "Qual a principal diferença entre Direitos Humanos e Direitos Fundamentais, conforme o PDF?",
+                options: [
+                    "Não há diferença, são sinônimos.",
+                    "Direitos Humanos são normas internacionais e Direitos Fundamentais são normas constitucionais.",
+                    "Direitos Humanos são baseados na ONU e Direitos Fundamentais não.",
+                    "Direitos Fundamentais são mais abrangentes que Direitos Humanos."
+                ],
+                correctAnswer: "Direitos Humanos são normas internacionais e Direitos Fundamentais são normas constitucionais."
+            },
+            {
+                question: "A primeira geração de Direitos Humanos abrange quais tipos de direitos?",
+                options: [
+                    "Econômicos, sociais e culturais.",
+                    "Ao desenvolvimento, à paz e ao meio ambiente.",
+                    "Civis e políticos.",
+                    "Apenas à moradia e alimentação."
+                ],
+                correctAnswer: "Civis e políticos."
+            },
+            {
+                question: "A Constituição Federal de 1988 incluiu os direitos fundamentais no rol de:",
+                options: [
+                    "Leis ordinárias.",
+                    "Emendas constitucionais provisórias.",
+                    "Cláusulas pétreas.",
+                    "Disposições transitórias."
+                ],
+                correctAnswer: "Cláusulas pétreas."
+            },
+            {
+                question: "De acordo com o Art. 5º da Constituição de 1988, todos são iguais perante a lei, sem distinção de qualquer natureza, garantindo-se a brasileiros e estrangeiros residentes no País a inviolabilidade do direito à vida, à liberdade, à igualdade, à segurança e à:",
+                options: [
+                    "Saúde",
+                    "Educação",
+                    "Propriedade",
+                    "Religião"
+                ],
+                correctAnswer: "Propriedade"
+            },
+            {
+                question: "O inciso IV do Art. 5º da Constituição Federal de 1988 estabelece que 'é livre a manifestação do pensamento, sendo vedado o:'",
+                options: [
+                    "Debate",
+                    "Crítica",
+                    "Anonimato",
+                    "Discurso de ódio"
+                ],
+                correctAnswer: "Anonimato"
+            },
+            {
+                question: "Qual é o principal órgão intergovernamental da ONU responsável pela promoção e proteção dos direitos humanos em todo o mundo, segundo o PDF?",
+                options: [
+                    "Assembleia Geral",
+                    "Conselho de Segurança",
+                    "Conselho de Direitos Humanos",
+                    "Corte Internacional de Justiça"
+                ],
+                correctAnswer: "Conselho de Direitos Humanos"
+            },
+            {
+                question: "Qual tratado da ONU, juntamente com o PIDCP, forma a base da Carta Internacional dos Direitos Humanos e detalha os direitos relacionados ao bem-estar material, às condições de vida dignas e à identidade cultural?",
+                options: [
+                    "Pacto de San José da Costa Rica",
+                    "Convenção sobre os Direitos da Criança",
+                    "Pacto Internacional sobre os Direitos Econômicos, Sociais e Culturais (PIDESC)",
+                    "Convenção Contra a Tortura"
+                ],
+                correctAnswer: "Pacto Internacional sobre os Direitos Econômicos, Sociais e Culturais (PIDESC)"
+            },
+            {
+                question: "A Carta das Nações Unidas foi assinada em São Francisco, nos Estados Unidos, em qual ano?",
+                options: [
+                    "1945",
+                    "1948",
+                    "1966",
+                    "1989"
+                ],
+                correctAnswer: "1945"
+            },
+            {
+                question: "Qual dos seguintes não é um dos PRINCIPAIS OBJETIVOS da Carta das Nações Unidas?",
+                options: [
+                    "Manter a paz e a segurança internacionais.",
+                    "Desenvolver relações amistosas entre as nações.",
+                    "Promover a submissão de um Estado a outro.",
+                    "Conseguir a cooperação internacional."
+                ],
+                correctAnswer: "Promover a submissão de um Estado a outro."
+            },
+            {
+                question: "Qual dos órgãos principais da ONU é responsável pela manutenção da paz e da segurança internacionais e possui 5 membros permanentes com poder de veto?",
+                options: [
+                    "Assembleia Geral",
+                    "Conselho Econômico e Social (ECOSOC)",
+                    "Corte Internacional de Justiça (CIJ)",
+                    "Conselho de Segurança"
+                ],
+                correctAnswer: "Conselho de Segurança"
+            },
+            {
+                question: "Os Pactos de Nova Iorque, adotados em 1966, complementam qual documento da ONU, tornando suas disposições legalmente vinculantes para os Estados que os ratificam?",
+                options: [
+                    "Estatuto de Roma",
+                    "Carta das Nações Unidas",
+                    "Declaração Universal dos Direitos Humanos (DUDH)",
+                    "Convenção Americana sobre Direitos Humanos"
+                ],
+                correctAnswer: "Declaração Universal dos Direitos Humanos (DUDH)"
+            },
+            {
+                question: "A Declaração Universal dos Direitos Humanos (DUDH) foi adotada em qual cidade e ano?",
+                options: [
+                    "Nova York, 1966",
+                    "Genebra, 1945",
+                    "Paris, 1948",
+                    "San José, 1969"
+                ],
+                correctAnswer: "Paris, 1948"
+            },
+            {
+                question: "Quantos artigos compõem a Declaração Universal dos Direitos Humanos (DUDH)?",
+                options: [
+                    "10",
+                    "20",
+                    "30",
+                    "50"
+                ],
+                correctAnswer: "30"
+            },
+            {
+                question: "De acordo com o PDF, qual o termo mais formal e abrangente para as formas pelas quais os sujeitos de Direito Internacional estabelecem direitos e obrigações entre si?",
+                options: [
+                    "Acordos",
+                    "Pactos",
+                    "Convenções",
+                    "Tratados"
+                ],
+                correctAnswer: "Tratados"
+            },
+            {
+                question: "Qual instrumento internacional é o principal a codificar as regras sobre a celebração, interpretação, aplicação e extinção dos tratados entre Estados?",
+                options: [
+                    "Carta das Nações Unidas",
+                    "Estatuto de Roma",
+                    "Convenção de Viena sobre o Direito dos Tratados (1969)",
+                    "Pacto de San José da Costa Rica"
+                ],
+                correctAnswer: "Convenção de Viena sobre o Direito dos Tratados (1969)"
+            },
+            {
+                question: "A Convenção sobre os Direitos da Criança é um exemplo de qual tipo de instrumento internacional, segundo o texto?",
+                options: [
+                    "Tratado de comércio",
+                    "Aliança militar",
+                    "Convenção (com foco em codificar ou desenvolver o direito internacional)",
+                    "Acordo bilateral"
+                ],
+                correctAnswer: "Convenção (com foco em codificar ou desenvolver o direito internacional)"
+            },
+            {
+                question: "Qual convenção proíbe e condena a discriminação racial em todas as suas formas e obriga os Estados a adotarem políticas para eliminá-la?",
+                options: [
+                    "CEDAW",
+                    "CDC",
+                    "CAT",
+                    "CERD (Convenção sobre a Eliminação de Todas as Formas de Discriminação Racial)"
+                ],
+                correctAnswer: "CERD (Convenção sobre a Eliminação de Todas as Formas de Discriminação Racial)"
+            },
+            {
+                question: "O Estatuto de Roma estabeleceu qual instituição judicial internacional?",
+                options: [
+                    "Corte Internacional de Justiça (CIJ)",
+                    "Tribunal Penal Internacional (TPI)",
+                    "Tribunal Europeu de Direitos Humanos (TEDH)",
+                    "Corte Interamericana de Direitos Humanos (Corte IDH)"
+                ],
+                correctAnswer: "Tribunal Penal Internacional (TPI)"
+            },
+            {
+                question: "Qual crime de jurisdição do TPI se refere a atos cometidos com a intenção de destruir, no todo ou em parte, um grupo nacional, étnico, racial ou religioso?",
+                options: [
+                    "Crime de guerra",
+                    "Crime de agressão",
+                    "Crime contra a humanidade",
+                    "Genocídio"
+                ],
+                correctAnswer: "Genocídio"
+            },
+            {
+                question: "O princípio da complementaridade no TPI significa que ele atua somente quando:",
+                options: [
+                    "Os tribunais nacionais não querem investigar ou julgar os crimes.",
+                    "Os tribunais nacionais podem e querem investigar e julgar os crimes.",
+                    "O Conselho de Segurança da ONU impede a ação nacional.",
+                    "Há um consenso internacional para a não intervenção."
+                ],
+                correctAnswer: "Os tribunais nacionais não podem ou não querem genuinamente investigar ou julgar esses crimes."
+            },
+            {
+                question: "O Brasil é um Estado Parte do Estatuto de Roma desde qual ano?",
+                options: [
+                    "1998",
+                    "2002",
+                    "2010",
+                    "2016"
+                ],
+                correctAnswer: "2002"
+            },
+            {
+                question: "Qual dos seguintes países NÃO é membro do TPI, conforme o PDF?",
+                options: [
+                    "Brasil",
+                    "França",
+                    "China",
+                    "Alemanha"
+                ],
+                correctAnswer: "China"
+            },
+            {
+                question: "Qual das seguintes não é uma forma principal de início de processo no Tribunal Penal Internacional?",
+                options: [
+                    "Por remessa de um Estado Parte.",
+                    "Por iniciativa de uma ONG de direitos humanos sem autorização do Procurador.",
+                    "Por remessa do Conselho de Segurança das Nações Unidas.",
+                    "Por iniciativa própria do Procurador (Proprio Motu)."
+                ],
+                correctAnswer: "Por iniciativa de uma ONG de direitos humanos sem autorização do Procurador."
+            },
+            {
+                question: "O Sistema Europeu de Direitos Humanos tem como principal instrumento a:",
+                options: [
+                    "Carta Africana dos Direitos Humanos e dos Povos",
+                    "Pacto de San José da Costa Rica",
+                    "Convenção Europeia de Direitos Humanos (CEDH)",
+                    "Declaração Universal dos Direitos Humanos"
+                ],
+                correctAnswer: "Convenção Europeia de Direitos Humanos (CEDH)"
+            },
+            {
+                question: "O Tribunal Europeu de Direitos Humanos (TEDH) está sediado em qual cidade?",
+                options: [
+                    "Bruxelas",
+                    "Genebra",
+                    "Estrasburgo",
+                    "Viena"
+                ],
+                correctAnswer: "Estrasburgo"
+            },
+            {
+                question: "Quantos Estados Membros possui o Tribunal Europeu de Direitos Humanos (considerando a Rússia suspensa)?",
+                options: [
+                    "47",
+                    "46",
+                    "50",
+                    "27"
+                ],
+                correctAnswer: "46"
+            },
+            {
+                question: "O Sistema Africano de Proteção dos Direitos Humanos é baseado em qual documento fundamental?",
+                options: [
+                    "Carta das Nações Unidas",
+                    "Declaração de Direitos Humanos do Cairo",
+                    "Carta Africana dos Direitos Humanos e dos Povos (Carta de Banjul)",
+                    "Convenção de Maputo"
+                ],
+                correctAnswer: "Carta Africana dos Direitos Humanos e dos Povos (Carta de Banjul)"
+            },
+            {
+                question: "Qual a principal característica do sistema africano em relação aos direitos humanos, comparado ao sistema universal?",
+                options: [
+                    "Ênfase apenas em direitos civis e políticos.",
+                    "Forte ênfase nos direitos dos povos e no dever dos indivíduos para com a comunidade.",
+                    "Total ausência de mecanismos de solução de controvérsias.",
+                    "Desconsideração dos direitos econômicos e sociais."
+                ],
+                correctAnswer: "Forte ênfase nos direitos dos povos e no dever dos indivíduos para com a comunidade."
+            },
+            {
+                question: "Qual dos casos relevantes do Tribunal Africano dos Direitos do Homem e dos Povos envolveu a violação de direitos territoriais, religiosos e de caça e coleta de um povo indígena no Quénia?",
+                options: [
+                    "Caso envolvendo a Tanzânia",
+                    "Caso Norbert Zongo",
+                    "Caso Ogiek vs. Quénia",
+                    "Caso envolvendo o Burquina Faso"
+                ],
+                correctAnswer: "Caso Ogiek vs. Quénia"
+            },
+            {
+                question: "O Sistema Asiático de Proteção dos Direitos Humanos se caracteriza pela:",
+                options: [
+                    "Existência de um robusto tribunal regional semelhante ao europeu.",
+                    "Falta de um sistema regional formal, com foco em mecanismos alternativos e diálogo.",
+                    "Exclusiva priorização de valores ocidentais de direitos humanos.",
+                    "Inexistência de atuação de ONGs de direitos humanos."
+                ],
+                correctAnswer: "Falta de um sistema regional formal, com foco em mecanismos alternativos e diálogo."
+            },
+            {
+                question: "O Sistema Interamericano de Direitos Humanos (SIDH) faz parte de qual organização?",
+                options: [
+                    "Organização das Nações Unidas (ONU)",
+                    "Organização dos Estados Americanos (OEA)",
+                    "União Europeia (UE)",
+                    "União Africana (UA)"
+                ],
+                correctAnswer: "Organização dos Estados Americanos (OEA)"
+            },
+            {
+                question: "O Pacto de San José da Costa Rica é o nome oficial de qual tratado internacional?",
+                options: [
+                    "Protocolo de San Salvador",
+                    "Convenção Americana sobre Direitos Humanos (CADH)",
+                    "Carta de Banjul",
+                    "Convenção de Viena"
+                ],
+                correctAnswer: "Convenção Americana sobre Direitos Humanos (CADH)"
+            },
+            {
+                question: "Qual órgão do SIDH tem sede em Washington, D.C. e recebe petições individuais alegando violações de direitos humanos?",
+                options: [
+                    "Corte Interamericana de Direitos Humanos (Corte IDH)",
+                    "Comissão Interamericana de Direitos Humanos (CIDH)",
+                    "Tribunal Penal Internacional (TPI)",
+                    "Conselho de Segurança da OEA"
+                ],
+                correctAnswer: "Comissão Interamericana de Direitos Humanos (CIDH)"
+            },
+            {
+                question: "Qual caso, um marco fundamental da Corte IDH, declarou que as leis de anistia que impedem a investigação e punição de crimes graves contra os direitos humanos são incompatíveis com a Convenção Americana?",
+                options: [
+                    "Caso Gomes Lund e Outros vs. Brasil",
+                    "Caso Velásquez Rodríguez vs. Honduras",
+                    "Caso Barrios Altos vs. Peru",
+                    "Caso Comunidades Quilombolas de Alcântara vs. Brasil"
+                ],
+                correctAnswer: "Caso Barrios Altos vs. Peru"
+            },
+            {
+                question: "O caso 'Guerrilha do Araguaia' (Gomes Lund e Outros vs. Brasil) resultou na condenação do Brasil por quais violações?",
+                options: [
+                    "Apenas por violação de direitos econômicos.",
+                    "Desaparecimento forçado, tortura e execução extrajudicial.",
+                    "Apenas por danos ambientais.",
+                    "Violação da liberdade de expressão."
+                ],
+                correctAnswer: "Desaparecimento forçado, tortura e execução extrajudicial."
+            },
+            {
+                question: "Qual caso da Corte IDH condenou o Brasil por violações de direitos humanos de comunidades quilombolas relacionadas à falta de demarcação e titulação de seus territórios?",
+                options: [
+                    "Caso Empregados da Fábrica de Fogos de Santo Antônio de Jesus vs. Brasil",
+                    "Caso Comunidades Quilombolas de Alcântara vs. Brasil",
+                    "Caso Yakye Axa vs. Paraguai",
+                    "Caso Povo Indígena Xucuru vs. Brasil"
+                ],
+                correctAnswer: "Caso Comunidades Quilombolas de Alcântara vs. Brasil"
+            },
+            {
+                question: "O Ministério dos Direitos Humanos e da Cidadania (MDHC) do Brasil é o principal órgão responsável pela:",
+                options: [
+                    "Apenas pela fiscalização de ONGs.",
+                    "Formulações de políticas econômicas.",
+                    "Formulação, coordenação e execução de políticas públicas na área de direitos humanos.",
+                    "Atuação exclusiva no Poder Judiciário."
+                ],
+                correctAnswer: "Formulação, coordenação e execução de políticas públicas na área de direitos humanos."
+            },
+            {
+                question: "Qual o principal órgão do MDHC que recebe e encaminha denúncias de violações de direitos humanos, operando o Disque 100 e o Ligue 180?",
+                options: [
+                    "Conselho Nacional de Direitos Humanos (CNDH)",
+                    "Ouvidoria Nacional de Direitos Humanos (ONDH)",
+                    "Comitê Nacional de Prevenção e Combate à Tortura (CNPCT)",
+                    "Programa de Proteção de Defensores de Direitos Humanos (PPDDH)"
+                ],
+                correctAnswer: "Ouvidoria Nacional de Direitos Humanos (ONDH)"
+            },
+            {
+                question: "Qual instituição é essencial à função jurisdicional do Estado, incumbida da orientação jurídica e da promoção dos direitos humanos, atuando na defesa dos necessitados?",
+                options: [
+                    "Ministério Público",
+                    "Poder Judiciário",
+                    "Defensorias Públicas",
+                    "Polícia Federal"
+                ],
+                correctAnswer: "Defensorias Públicas"
+            },
+            {
+                question: "Qual organização da sociedade civil, mencionada no PDF, atua na defesa dos direitos humanos e da democracia, com foco em litigância estratégica e advocacia?",
+                options: [
+                    "Anistia Internacional Brasil",
+                    "Human Rights Watch",
+                    "Conectas Direitos Humanos",
+                    "Associação Brasileira de Jornalismo Investigativo (ABRAJI)"
+                ],
+                correctAnswer: "Conectas Direitos Humanos"
+            },
+            {
+                question: "A Ordem dos Advogados do Brasil (OAB) desempenha um papel fundamental no monitoramento e defesa dos direitos humanos no país, além de regulamentar a profissão de advogado. Essa afirmação é:",
+                options: [
+                    "Falsa, a OAB não atua em direitos humanos.",
+                    "Verdadeira, mas sua atuação é limitada a questões de advocacia.",
+                    "Verdadeira, estendendo-se à proteção da Constituição, dos direitos humanos e da justiça social.",
+                    "Falsa, a OAB só atua em casos de defesa criminal."
+                ],
+                correctAnswer: "Verdadeira, estendendo-se à proteção da Constituição, dos direitos humanos e da justiça social."
+            },
+            {
+                question: "Qual o direito estabelecido no Artigo 1º da DUDH?",
+                options: [
+                    "Direito à propriedade privada",
+                    "Todos os seres humanos nascem livres e iguais em dignidade e direitos.",
+                    "Direito à liberdade de locomoção apenas.",
+                    "Direito à educação básica."
+                ],
+                correctAnswer: "Todos os seres humanos nascem livres e iguais em dignidade e direitos."
+            },
+            {
+                question: "Os Artigos 3º a 11º da DUDH tratam, entre outros, do direito à:",
+                options: [
+                    "Seguridade social",
+                    "Trabalho",
+                    "Vida, liberdade e segurança pessoal",
+                    "Participação na vida cultural"
+                ],
+                correctAnswer: "Vida, liberdade e segurança pessoal"
+            },
+            {
+                question: "A proibição da escravidão e da tortura está contida em qual faixa de artigos da DUDH?",
+                options: [
+                    "Artigos 1º e 2º",
+                    "Artigos 3º a 11º",
+                    "Artigos 12º a 17º",
+                    "Artigos 22º a 27º"
+                ],
+                correctAnswer: "Artigos 3º a 11º"
+            },
+            {
+                question: "Qual artigo da DUDH estabelece os princípios da não discriminação e da igualdade perante a lei?",
+                options: [
+                    "Artigo 1º",
+                    "Artigos 2º e 7º",
+                    "Artigo 18º",
+                    "Artigo 30º"
+                ],
+                correctAnswer: "Artigos 2º e 7º"
+            },
+            {
+                question: "Os direitos à seguridade social, ao trabalho e à educação são reconhecidos em qual faixa de artigos da DUDH?",
+                options: [
+                    "Artigos 12º a 17º",
+                    "Artigos 18º a 21º",
+                    "Artigos 22º a 27º",
+                    "Artigos 28º a 30º"
+                ],
+                correctAnswer: "Artigos 22º a 27º"
+            },
+            {
+                question: "De acordo com o PDF, o Conselho de Tutela da ONU:",
+                options: [
+                    "É responsável pela manutenção da paz e segurança.",
+                    "Coordena o trabalho da ONU nas áreas econômica, social e ambiental.",
+                    "Suspendeu suas operações após a independência do último território tutelado em 1994.",
+                    "Julga disputas legais entre Estados."
+                ],
+                correctAnswer: "Suspendeu suas operações após a independência do último território tutelado em 1994."
+            },
+            {
+                question: "O Secretariado da ONU é liderado por quem e qual sua principal função?",
+                options: [
+                    "Pelo Presidente da Assembleia Geral, fornecendo apoio militar.",
+                    "Pelo Secretário-Geral, fornecendo estudos, informações e apoio administrativo.",
+                    "Pelo Chefe da Corte Internacional de Justiça, resolvendo disputas legais.",
+                    "Pelo Comissário de Direitos Humanos, promovendo a educação em direitos humanos."
+                ],
+                correctAnswer: "Pelo Secretário-Geral, fornecendo estudos, informações e apoio administrativo."
+            },
+            {
+                question: "Qual o principal desafio que o Sistema Interamericano de Direitos Humanos enfrenta, conforme o PDF?",
+                options: [
+                    "Falta de casos a serem julgados.",
+                    "Excesso de apoio governamental.",
+                    "Sobrecarga de casos e resistência de alguns governos em cumprir as decisões.",
+                    "Inexistência de mecanismos de proteção."
+                ],
+                correctAnswer: "Sobrecarga de casos e resistência de alguns governos em cumprir as decisões."
+            },
+            {
+                question: "O caso Ximenes Lopes vs. Brasil foi o primeiro caso de condenação do Brasil na Corte IDH e é um marco na proteção dos direitos de qual grupo?",
+                options: [
+                    "Trabalhadores rurais",
+                    "Pessoas com deficiência e na desinstitucionalização de pacientes psiquiátricos.",
+                    "Mulheres vítimas de violência",
+                    "Povos indígenas"
+                ],
+                correctAnswer: "Pessoas com deficiência e na desinstitucionalização de pacientes psiquiátricos."
+            },
+            {
+                question: "No Brasil, as Defensorias Públicas, além de orientação jurídica, são incumbidas de:",
+                options: [
+                    "Julgar casos de violação de direitos humanos.",
+                    "Apenas fiscalizar organizações não governamentais.",
+                    "Promover os direitos humanos, atuando na defesa dos necessitados e em questões de interesse público.",
+                    "Executar políticas públicas na área de direitos humanos."
+                ],
+                correctAnswer: "Promover os direitos humanos, atuando na defesa dos necessitados e em questões de interesse público."
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let userAnswers = new Array(questions.length).fill(null);
+        let score = 0; // Número de acertos
+        let incorrectAnswers = 0; // Número de erros
+
+        // Elementos do DOM
+        const quizContainer = document.getElementById('quiz-container');
+        const resultScreen = document.getElementById('result-screen');
+        const questionIndicator = document.getElementById('question-indicator');
+        const questionText = document.getElementById('question-text');
+        const optionsForm = document.getElementById('options-form');
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const feedbackDiv = document.getElementById('feedback');
+        const finalScoreDisplay = document.getElementById('final-score');
+        const restartButton = document.getElementById('restart-button');
+
+        // Função para inicializar o Firebase
+        async function initializeFirebase() {
+            try {
+                if (Object.keys(firebaseConfig).length > 0) {
+                    app = initializeApp(firebaseConfig);
+                    db = getFirestore(app);
+                    auth = getAuth(app);
+
+                    // Autenticação
+                    if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } else {
+                        await signInAnonymously(auth);
+                    }
+                    userId = auth.currentUser ? auth.currentUser.uid : crypto.randomUUID();
+                    console.log("Firebase inicializado. User ID:", userId);
+                    // Opcional: Salvar o userId se for um usuário anônimo gerado
+                    // if (!auth.currentUser || !auth.currentUser.uid) {
+                    //     // Poderíamos salvar este userId gerado localmente ou em Firestore se fosse persistente
+                    // }
+                } else {
+                    console.warn("Firebase config não fornecida. O aplicativo funcionará sem persistência de dados.");
+                }
+            } catch (error) {
+                console.error("Erro ao inicializar Firebase ou autenticar:", error);
+            }
+        }
+
+        // Função para carregar uma questão
+        function loadQuestion() {
+            const currentQuestion = questions[currentQuestionIndex];
+            questionText.textContent = currentQuestion.question;
+            optionsForm.innerHTML = '';
+            feedbackDiv.classList.add('hidden'); // Esconde o feedback anterior
+
+            currentQuestion.options.forEach((option, index) => {
+                const label = document.createElement('label');
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = 'answer';
+                radio.value = option;
+                radio.checked = (userAnswers[currentQuestionIndex] === option); // Marca a opção se já foi selecionada
+                radio.onclick = () => saveAnswer(option); // Salva a resposta ao clicar
+
+                const span = document.createElement('span');
+                span.textContent = option;
+
+                label.appendChild(radio);
+                label.appendChild(span);
+                optionsForm.appendChild(label);
+            });
+
+            updateNavigationButtons();
+            updateQuestionIndicators();
+            displayFeedback(currentQuestionIndex); // Mostra o feedback se já respondeu
+        }
+
+        // Função para salvar a resposta do usuário
+        function saveAnswer(answer) {
+            userAnswers[currentQuestionIndex] = answer;
+            displayFeedback(currentQuestionIndex);
+        }
+
+        // Função para exibir o feedback (correto/incorreto)
+        function displayFeedback(qIndex) {
+            const selectedAnswer = userAnswers[qIndex];
+            const currentQuestion = questions[qIndex];
+
+            feedbackDiv.classList.remove('correct', 'incorrect');
+            if (selectedAnswer !== null) {
+                feedbackDiv.classList.remove('hidden');
+                if (selectedAnswer === currentQuestion.correctAnswer) {
+                    feedbackDiv.classList.add('correct');
+                    feedbackDiv.textContent = 'Correto!';
+                } else {
+                    feedbackDiv.classList.add('incorrect');
+                    feedbackDiv.textContent = `Incorreto. A resposta correta era: ${currentQuestion.correctAnswer}`;
+                }
+            } else {
+                feedbackDiv.classList.add('hidden');
+            }
+        }
+
+        // Função para atualizar os botões de navegação
+        function updateNavigationButtons() {
+            prevButton.disabled = currentQuestionIndex === 0;
+            nextButton.textContent = currentQuestionIndex === questions.length - 1 ? 'Finalizar Simulado' : 'Próxima';
+        }
+
+        // Função para atualizar os indicadores de questão
+        function updateQuestionIndicators() {
+            questionIndicator.textContent = `Questão ${currentQuestionIndex + 1} de ${questions.length}`;
+        }
+
+        // Função para avançar para a próxima questão
+        function nextQuestion() {
+            if (currentQuestionIndex < questions.length - 1) {
+                currentQuestionIndex++;
+                loadQuestion();
+            } else {
+                finishQuiz();
+            }
+        }
+
+        // Função para retornar à questão anterior
+        function prevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                loadQuestion();
+            }
+        }
+
+        // Função para finalizar o simulado e mostrar o resultado
+        function finishQuiz() {
+            score = 0;
+            userAnswers.forEach((answer, index) => {
+                if (answer === questions[index].correctAnswer) {
+                    score++;
+                }
+            });
+            incorrectAnswers = questions.length - score; // Calcula o número de erros
+
+            quizContainer.classList.add('hidden');
+            resultScreen.classList.remove('hidden');
+            finalScoreDisplay.textContent = `Você acertou ${score} questões e errou ${incorrectAnswers} de ${questions.length} no total!`;
+
+            // Opcional: Salvar o resultado no Firestore
+            saveQuizResult(score);
+        }
+
+        // Função para salvar o resultado no Firestore (opcional)
+        async function saveQuizResult(finalScore) {
+            if (!db || !userId) {
+                console.warn("Firebase ou userId não disponíveis, não é possível salvar o resultado.");
+                return;
+            }
+            try {
+                // Usando uma subcoleção privada para o usuário
+                const userQuizRef = doc(db, `artifacts/${appId}/users/${userId}/quiz_results`, new Date().toISOString());
+                await setDoc(userQuizRef, {
+                    score: finalScore,
+                    totalQuestions: questions.length,
+                    timestamp: new Date()
+                });
+                console.log("Resultado do quiz salvo com sucesso!");
+            } catch (error) {
+                console.error("Erro ao salvar o resultado do quiz:", error);
+            }
+        }
+
+        // Função para reiniciar o simulado
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            userAnswers.fill(null);
+            score = 0;
+            incorrectAnswers = 0; // Reinicia a contagem de erros
+            quizContainer.classList.remove('hidden');
+            resultScreen.classList.add('hidden');
+            loadQuestion();
+        }
+
+        // Event Listeners
+        nextButton.addEventListener('click', nextQuestion);
+        prevButton.addEventListener('click', prevQuestion);
+        restartButton.addEventListener('click', restartQuiz);
+
+        // Inicialização do simulado
+        window.onload = async () => {
+            await initializeFirebase();
+            loadQuestion();
+        };
+
+    </script>
+</body>
+</html>
